@@ -25,16 +25,16 @@ function reducer(state, action) {
         }))
       };
     }
-    case 'startProcessing': {
+    case 'startLoading': {
       return {
         ...state,
-        processingListingIndex: action.payload
+        isLoading: true
       };
     }
-    case 'stopProcessing': {
+    case 'stopLoading': {
       return {
         ...state,
-        processingListingIndex: null
+        isLoading: false
       };
     }
     default:
@@ -46,7 +46,7 @@ function Trade(props) {
   const flow = useContext(FlowContext);
   const [state, dispatch] = useReducer(reducer, {
     listings: null,
-    processingListingIndex: null
+    isLoading: false
   });
 
   useEffect(() => {
@@ -57,23 +57,11 @@ function Trade(props) {
 
   const onBuy = (listingIndex) => {
     console.log(listingIndex);
-    dispatch({type: 'startProcessing', payload: listingIndex});
-    // TODO: Once your buy() method is implemented in Flow.jsx, uncomment this line.
-    // await flow.buy(listingIndex);
-    await flow.fetchCollection()
-    const listings = await flow.fetchListings();
-    dispatch({type: 'setListings', payload: listings});
-    dispatch({type: 'stopProcessing'});
+    flow.buy(listingIndex);
   };
   const onWithdraw = (listingIndex) => {
     console.log(listingIndex);
-    dispatch({type: 'startProcessing', payload: listingIndex});
-    // TODO: Once your withdrawListing() method is implemented in Flow.jsx, uncomment this line.
-    // await flow.withdrawListing(listingIndex);
-    await flow.fetchCollection()
-    const listings = await flow.fetchListings();
-    dispatch({type: 'setListings', payload: listings});
-    dispatch({type: 'stopProcessing'});
+    flow.withdrawListing(listingIndex);
   };
 
   return (
@@ -114,10 +102,7 @@ function Trade(props) {
                 <td>
                   {!isUserOwner &&
                     <button
-                      className={classNames({
-                        'button is-success': true,
-                        'is-loading': state.processingListingIndex === index
-                      })}
+                      className="button is-success"
                       onClick={() => onBuy(index)}
                     >
                       Buy
@@ -125,10 +110,7 @@ function Trade(props) {
                   }
                   {isUserOwner &&
                     <button
-                      className={classNames({
-                        'button is-warning': true,
-                        'is-loading': state.processingListingIndex === index
-                      })}
+                      className="button is-warning"
                       onClick={() => onWithdraw(index)}
                     >
                       Withdraw

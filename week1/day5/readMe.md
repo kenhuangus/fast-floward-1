@@ -12,7 +12,8 @@ A quick review of Day 4 before we get going.
   - Use `fcl.authz` as a shorthand for current user.
   - FCL automatically converts Cadence types and values into JavaScript equivalents with `fcl.decode`.
 - Flow Testnet provides an easy way to test DApp integrations with live user wallets.
-  - To view contracts deployed to testnet, use [flow-view-source.com][1].
+  - To view contracts deployed to testnet, use 
+  [flow-view-source.com][1].
   - To create and fund testnet accounts, use [flowfaucet][2].
 
 # Videos
