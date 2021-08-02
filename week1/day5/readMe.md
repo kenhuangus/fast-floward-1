@@ -136,6 +136,7 @@ buy // call LocalArtistMarket.buy()
 Also, take a look at `/src/pages/Trade/Trade.jsx` to see if you need to uncomment anything...
 
 In addition to make changes to `/src/context/Flow.jsx` and  `/src/pages/Trade/Trade.jsx`, you will need do the following to complet week 1 question 9: W1Q9 quest
+
 1: make sure to deploy LocalArtistMarket cadence contract under  `/src/cadence/LocalArtistMarket`. In order to do this, follow the instruction in day 4 to create flow.json file under cadence directory and update the file with your private key info, smaple flow.json content is listed below
 
 {
