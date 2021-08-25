@@ -8,6 +8,8 @@ As a side note, I have greatly appreciated the feedback we have received in the 
 
 There are no videos for you to watch today. Today's content is merely an extension of yesterday, and we will be walking through this in office hours. I encourage you to watch that video after I post it here.
 
+Update: Office Hours Video - https://youtu.be/X2NPoOElKkk
+
 # Some Initial Problems in RegistryContract
 
 ## Review
@@ -62,7 +64,7 @@ pub contract RegistryNFTContract: RegistryInterface{
 }
 ```
 
-It's important to realize that if we defined `totalSupply` as `pub let totalSupply: UInt64`, this wouldn't work because `pub` only has write scope of current & inner as we learned during Week 2 Day 1.
+It's important to realize that if we defined `totalSupply` as `pub var totalSupply: UInt64`, this wouldn't work because `pub` only has write scope of current & inner as we learned during Week 2 Day 1.
 
 ## Using Access Control to Update Data
 
@@ -82,12 +84,13 @@ pub contract RegistryNFTContract: RegistryInterface {
     // We define a resource interface called ITenantMinter
     // that allows this contract to call updateTotalSupply.
     pub resource interface ITenantMinter {
+        pub var totalSupply: UInt64
         access(contract) fun updateTotalSupply()
     }
 
     // Required from RegistryInterface
     pub resource Tenant: ITenantMinter {
-        pub(set) var totalSupply: UInt64
+        pub var totalSupply: UInt64
 
         // Define an updateTotalSupply function to be exposed
         // by the ITenantMinter resource interface.
@@ -102,6 +105,7 @@ pub contract RegistryNFTContract: RegistryInterface {
         pub let id: UInt64
 
         init(_tenantRef: &Tenant{ITenantMinter}) {
+            self.id = _tenantRef.totalSupply
             _tenantRef.updateTotalSupply()
         }
     }
@@ -140,12 +144,13 @@ pub contract RegistryNFTContract: RegistryInterface {
     // We define a resource interface called ITenantMinter
     // that allows this contract to call updateTotalSupply.
     pub resource interface ITenantMinter {
+        pub var totalSupply: UInt64
         access(contract) fun updateTotalSupply()
     }
 
     // Required from RegistryInterface
     pub resource Tenant: ITenantMinter {
-        pub(set) var totalSupply: UInt64
+        pub var totalSupply: UInt64
 
         access(self) let nftMinter: @NFTMinter
 
@@ -169,6 +174,7 @@ pub contract RegistryNFTContract: RegistryInterface {
         pub let id: UInt64
 
         init(_tenantRef: &Tenant{ITenantMinter}) {
+            self.id = _tenantRef.totalSupply
             _tenantRef.updateTotalSupply()
         }
     }
